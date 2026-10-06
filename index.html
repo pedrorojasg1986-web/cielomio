@@ -39,13 +39,22 @@ label span{display:block;font-weight:600;font-size:.92rem;margin-bottom:5px}
 label small{font-weight:400;color:var(--muted)}
 select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px!important}
 input[type=text],input[type=email],input[type=tel],input[type=date],input[type=time],select{
-  font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;width:100%;min-height:48px}
+  font:inherit;color:var(--ink);background-color:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;width:100%;min-height:48px}
 input:focus{border-color:var(--sun);outline:none}
 .check{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:var(--muted)}
 .check input{width:18px;height:18px;margin-top:2px;accent-color:var(--sun);flex:none}
 .btn:disabled{opacity:.6;cursor:wait}
 .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:600;border-radius:999px;padding:15px 26px;background:var(--sun);color:var(--sun-ink);width:100%}
 .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line);width:auto}
+.tel{display:grid;grid-template-columns:118px 1fr;gap:8px}
+fieldset.dt{border:0;margin:0;padding:0;min-width:0}
+fieldset.dt legend{font-weight:600;font-size:.92rem;margin-bottom:5px;padding:0}
+fieldset.dt legend small{font-weight:400;color:var(--muted)}
+.tri{display:grid;grid-template-columns:.8fr 1.4fr 1fr;gap:10px}
+.tri.mdy{grid-template-columns:1.4fr .8fr 1fr}
+.duo{display:grid;grid-template-columns:1.6fr 1fr;gap:10px}
+.hint{display:block;color:var(--muted);font-size:.82rem;margin-top:5px}
+select:disabled{opacity:.55}
 .err{color:var(--err);font-size:.9rem;min-height:1.2em;margin:0}
 #result{display:none;max-width:420px}
 #result.show{display:block;animation:rise .5s ease}
@@ -54,7 +63,7 @@ input:focus{border-color:var(--sun);outline:none}
 .sign{font-family:var(--display);font-size:2.2rem;margin:0 0 6px;color:var(--ink)}
 #rDesc{color:var(--ink);font-size:1.1rem}
 .wheel-box{max-width:440px;width:100%;justify-self:center}
-@media (max-width:820px){.wheel-box{max-width:300px;order:-1}}
+@media (max-width:820px){.wheel-box{max-width:240px;order:-1}}
 #wheel{width:100%;height:auto;display:block}
 #wheelG{transform-box:view-box;transform-origin:50% 50%;transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
 .seg{fill:var(--surface);stroke:var(--line);transition:fill .6s}
@@ -76,6 +85,15 @@ input:focus{border-color:var(--sun);outline:none}
 .sheet details p{margin:8px 0 0;font-size:.88rem}
 .sheet .btn{margin-bottom:8px}
 .link{background:none;border:0;font:inherit;color:var(--muted);text-decoration:underline;cursor:pointer;width:100%;padding:8px}
+@media (max-width:600px){
+  .row{grid-template-columns:1fr}
+  form,#result{max-width:none}
+  .tri,.tri.mdy{gap:8px}
+  select{padding-left:10px!important;padding-right:26px!important;background-position:calc(100% - 15px) 50%,calc(100% - 9px) 50%!important}
+}
+@media (max-width:360px){
+  .tri,.tri.mdy,.duo{grid-template-columns:1fr}
+}
 footer{padding:0 0 36px;color:var(--muted);font-size:.85rem}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -98,17 +116,31 @@ footer{padding:0 0 36px;color:var(--muted);font-size:.85rem}
     <form id="signup" novalidate>
       <label><span>Tu nombre</span><input type="text" id="fName" autocomplete="given-name"></label>
       <div class="row">
-        <label><span>Fecha de nacimiento</span><input type="date" id="fDate" min="1920-01-01" max="2026-12-31"></label>
-        <label><span>Hora <small>(si la sabes)</small></span><input type="time" id="fTime"></label>
-      </div>
-      <div class="row">
         <label><span>País donde naciste</span><select id="fCountry"></select></label>
         <label><span>Ciudad</span><select id="fCity"></select></label>
       </div>
       <label id="otherWrap" hidden><span>Escribe tu ciudad</span><input type="text" id="fOther"></label>
+      <fieldset class="dt">
+        <legend>Fecha de nacimiento</legend>
+        <div class="tri" id="dateRow">
+          <select id="fDay" aria-label="Día"></select>
+          <select id="fMonth" aria-label="Mes"></select>
+          <select id="fYear" aria-label="Año"></select>
+        </div>
+        <small class="hint" id="dateHint">Primero elige tu país</small>
+      </fieldset>
+      <fieldset class="dt">
+        <legend>Hora de nacimiento <small>(si la sabes)</small></legend>
+        <div class="duo">
+          <select id="fHour" aria-label="Hora"></select>
+          <select id="fMin" aria-label="Minutos"></select>
+        </div>
+      </fieldset>
       <div class="row">
         <label><span>Correo</span><input type="email" id="fEmail" autocomplete="email"></label>
-        <label><span>Teléfono</span><input type="tel" id="fPhone" autocomplete="tel" placeholder="+51 999 999 999"></label>
+        <div><label for="fPhone"><span>Teléfono</span></label>
+          <div class="tel"><select id="fCode" aria-label="Código de país"></select><input type="tel" id="fPhone" autocomplete="tel-national" inputmode="tel" placeholder="Tu número"></div>
+        </div>
       </div>
       <p class="err" id="fErr" role="alert"></p>
       <button class="btn" type="submit">Recibir mi carta gratis</button>
@@ -198,7 +230,6 @@ footer{padding:0 0 36px;color:var(--muted);font-size:.85rem}
     cur+=((-i*30-cur)%360+540)%360-180;
     g.style.transform=`rotate(${cur}deg)`;
   }
-  $("fDate").addEventListener("change",e=>{const p=parseDate(e.target.value);if(p)showSign(signIndex(p.m,p.d));});
 
   // País y ciudad
   const PLACES={
@@ -244,20 +275,84 @@ footer{padding:0 0 36px;color:var(--muted);font-size:.85rem}
   fCity.addEventListener("change",toggleOther);
   fillCities();
 
+  // Fecha y hora según el país
+  const MDY=["Estados Unidos"];
+  const MESES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  const fDay=$("fDay"),fMonth=$("fMonth"),fYear=$("fYear"),fHour=$("fHour"),fMin=$("fMin");
+  fMonth.append(opt("","Mes",true));MESES.forEach((m,i)=>fMonth.append(opt(String(i+1),m)));
+  const hoy=new Date().getFullYear();
+  fYear.append(opt("","Año",true));for(let y=hoy;y>=1920;y--)fYear.append(opt(String(y),String(y)));
+  function fillDays(){
+    const keep=fDay.value,m=+fMonth.value||1,y=+fYear.value||2000;
+    const n=new Date(y,m,0).getDate();
+    fDay.innerHTML="";fDay.append(opt("","Día",!keep||+keep>n));
+    for(let d=1;d<=n;d++){const o=opt(String(d),String(d));if(String(d)===keep&&+keep<=n)o.selected=true;fDay.append(o);}
+  }
+  fillDays();
+  fHour.append(opt("","No sé la hora"));
+  for(let h=0;h<24;h++){
+    const h12=h%12===0?12:h%12,ap=h<12?"a. m.":"p. m.";
+    fHour.append(opt(String(h).padStart(2,"0"),h12+" "+ap+" ("+String(h).padStart(2,"0")+":00)"));
+  }
+  fHour.querySelector("option").selected=true;
+  fMin.append(opt("00","00 min"));for(let m=1;m<60;m++)fMin.append(opt(String(m).padStart(2,"0"),String(m).padStart(2,"0")+" min"));
+  function setDateFormat(){
+    const c=fCountry.value,row=$("dateRow");
+    const on=!!c;[fDay,fMonth,fYear].forEach(x=>x.disabled=!on);
+    $("dateHint").textContent=on?(MDY.includes(c)?"Formato: mes / día / año":"Formato: día / mes / año"):"Primero elige tu país";
+    if(MDY.includes(c)){row.className="tri mdy";row.append(fMonth,fDay,fYear);}
+    else{row.className="tri";row.append(fDay,fMonth,fYear);}
+  }
+  function fechaISO(){
+    if(!fDay.value||!fMonth.value||!fYear.value)return "";
+    return fYear.value+"-"+fMonth.value.padStart(2,"0")+"-"+fDay.value.padStart(2,"0");
+  }
+  function onDate(){fillDays();const v=fechaISO();if(v){const p=parseDate(v);showSign(signIndex(p.m,p.d));}}
+  fMonth.addEventListener("change",onDate);fYear.addEventListener("change",onDate);fDay.addEventListener("change",onDate);
+  fHour.addEventListener("change",()=>{fMin.disabled=!fHour.value;});
+  fMin.disabled=true;
+  fCountry.addEventListener("change",setDateFormat);
+  setDateFormat();
+
+  // Código telefónico según el país
+  const CODIGOS=[["Perú","🇵🇪","+51"],["Argentina","🇦🇷","+54"],["Bolivia","🇧🇴","+591"],["Brasil","🇧🇷","+55"],["Chile","🇨🇱","+56"],
+    ["Colombia","🇨🇴","+57"],["Costa Rica","🇨🇷","+506"],["Cuba","🇨🇺","+53"],["Ecuador","🇪🇨","+593"],["El Salvador","🇸🇻","+503"],
+    ["España","🇪🇸","+34"],["Estados Unidos","🇺🇸","+1"],["Guatemala","🇬🇹","+502"],["Honduras","🇭🇳","+504"],["México","🇲🇽","+52"],
+    ["Nicaragua","🇳🇮","+505"],["Panamá","🇵🇦","+507"],["Paraguay","🇵🇾","+595"],["Puerto Rico","🇵🇷","+1"],
+    ["República Dominicana","🇩🇴","+1"],["Uruguay","🇺🇾","+598"],["Venezuela","🇻🇪","+58"]];
+  const fCode=$("fCode");
+  CODIGOS.forEach(([pais,flag,code])=>{const o=opt(pais,flag+" "+code);o.dataset.code=code;fCode.append(o);});
+  const otroCod=opt("__otro","🌐 Otro");otroCod.dataset.code="";fCode.append(otroCod);
+  function setCode(){
+    const c=fCountry.value;
+    if(CODIGOS.some(x=>x[0]===c)) fCode.value=c;
+    else if(c==="Otro país") fCode.value="__otro";
+    syncPhoneHint();
+  }
+  function syncPhoneHint(){$("fPhone").placeholder=fCode.value==="__otro"?"+ código y número":"Tu número";}
+  fCode.addEventListener("change",syncPhoneHint);
+  fCountry.addEventListener("change",setCode);
+  fCode.value="Perú";
+
   // Formulario
   $("signup").addEventListener("submit",e=>{
     e.preventDefault();
-    const name=$("fName").value.trim(),date=$("fDate").value,time=$("fTime").value,
-          country=$("fCountry").value,city=$("fCity").value==="__otra"?$("fOther").value.trim():$("fCity").value,email=$("fEmail").value.trim(),phone=$("fPhone").value.trim();
+    const name=$("fName").value.trim(),country=fCountry.value,
+          city=fCity.value==="__otra"?$("fOther").value.trim():fCity.value,
+          date=fechaISO(),time=fHour.value?fHour.value+":"+fMin.value:"",
+          email=$("fEmail").value.trim(),phone=$("fPhone").value.trim();
     const fail=(msg,id)=>{$("fErr").textContent=msg;$(id).focus();};
     if(!name) return fail("Escribe tu nombre.","fName");
-    if(!parseDate(date)) return fail("Elige tu fecha de nacimiento.","fDate");
     if(!country) return fail("Elige el país donde naciste.","fCountry");
-    if(!city) return fail($("fCity").value==="__otra"?"Escribe la ciudad donde naciste.":"Elige la ciudad donde naciste.",$("fCity").value==="__otra"?"fOther":"fCity");
+    if(!city) return fail(fCity.value==="__otra"?"Escribe la ciudad donde naciste.":"Elige la ciudad donde naciste.",fCity.value==="__otra"?"fOther":"fCity");
+    if(!date) return fail("Completa tu fecha de nacimiento: día, mes y año.",!fDay.value?"fDay":!fMonth.value?"fMonth":"fYear");
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("Revisa tu correo.","fEmail");
-    if(phone.replace(/\D/g,"").length<9) return fail("Escribe tu número de teléfono completo.","fPhone");
+    const code=fCode.selectedOptions[0].dataset.code,digits=phone.replace(/\D/g,"");
+    if(code&&digits.length<6) return fail("Escribe tu número de teléfono completo.","fPhone");
+    if(!code&&(!phone.trim().startsWith("+")||digits.length<8)) return fail("Escribe tu número con el código de país, por ejemplo +44 7700 900000.","fPhone");
+    const fullPhone=code?code+" "+phone.replace(/^\s*\+?0*/,"").trim():phone.trim();
     $("fErr").textContent="";
-    pedirAprobacion({name,date,time:time||null,country,city,email,phone});
+    pedirAprobacion({name,date,time:time||null,country,city,email,phone:fullPhone});
   });
 
   // Aprobación antes de enviar
@@ -297,7 +392,7 @@ footer{padding:0 0 36px;color:var(--muted);font-size:.85rem}
     showSign(i);
   }
   $("again").addEventListener("click",()=>{
-    $("signup").reset();fillCities();$("result").classList.remove("show");
+    $("signup").reset();fillCities();setDateFormat();fillDays();fMin.disabled=true;fCode.value="Perú";syncPhoneHint();$("result").classList.remove("show");
     $("intro").style.display="";$("signup").style.display="";$("fName").focus();
   });
 })();
