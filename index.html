@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cielo Mío · Tu carta astral gratis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ECEAF6; --surface:#F8F7FD; --ink:#23173A; --muted:#5E5578;
+  --sun:#E39A2E; --sun-ink:#2A1A05; --line:#CFCAE3; --err:#B3261E;
+  --display:"Gloock", Georgia, serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#17112A;--surface:#221A3A;--ink:#EDE9FA;--muted:#B3A9D0;--sun:#F2B552;--line:#3A3058;--err:#FF8A80}
+}
+:root[data-theme="dark"]{--bg:#17112A;--surface:#221A3A;--ink:#EDE9FA;--muted:#B3A9D0;--sun:#F2B552;--line:#3A3058;--err:#FF8A80}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+header{padding:20px 0}
+.logo{font-family:var(--display);font-size:1.5rem;display:flex;align-items:center;gap:10px}
+.logo svg{width:28px;height:28px}
+main{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:20px 0 60px}
+@media (max-width:820px){main{grid-template-columns:1fr;gap:20px;padding-top:0}}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(2.3rem,5.5vw,3.6rem);line-height:1.08;margin:0 0 14px}
+.lead{color:var(--muted);font-size:1.1rem;margin:0 0 28px;max-width:32ch}
+form{display:grid;gap:14px;max-width:420px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label span{display:block;font-weight:600;font-size:.92rem;margin-bottom:5px}
+label small{font-weight:400;color:var(--muted)}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px!important}
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=time],select{
+  font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;width:100%;min-height:48px}
+input:focus{border-color:var(--sun);outline:none}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:var(--muted)}
+.check input{width:18px;height:18px;margin-top:2px;accent-color:var(--sun);flex:none}
+.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:600;border-radius:999px;padding:15px 26px;background:var(--sun);color:var(--sun-ink);width:100%}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line);width:auto}
+.err{color:var(--err);font-size:.9rem;min-height:1.2em;margin:0}
+#result{display:none;max-width:420px}
+#result.show{display:block;animation:rise .5s ease}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#result p{color:var(--muted);margin:0 0 22px}
+.sign{font-family:var(--display);font-size:2.2rem;margin:0 0 6px;color:var(--ink)}
+#rDesc{color:var(--ink);font-size:1.1rem}
+.wheel-box{max-width:440px;width:100%;justify-self:center}
+@media (max-width:820px){.wheel-box{max-width:300px;order:-1}}
+#wheel{width:100%;height:auto;display:block}
+#wheelG{transform-box:view-box;transform-origin:50% 50%;transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
+.seg{fill:var(--surface);stroke:var(--line);transition:fill .6s}
+.seg.on{fill:var(--sun)}
+.glyph{font-size:22px;fill:var(--ink);text-anchor:middle;dominant-baseline:central;font-family:"Segoe UI Symbol","Apple Symbols","Noto Sans Symbols 2",var(--body)}
+.glyph.on{fill:var(--sun-ink)}
+.hub{fill:var(--bg);stroke:var(--line)}
+.hub-name{font-family:var(--display);font-size:30px;fill:var(--ink);text-anchor:middle}
+.hub-sub{font-size:13px;fill:var(--muted);text-anchor:middle;font-family:var(--body)}
+.pointer{fill:var(--sun)}
+footer{padding:0 0 36px;color:var(--muted);font-size:.85rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="logo">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 6a11 11 0 1 0 0 20a9 9 0 1 1 0-20z" fill="var(--sun)"/></svg>
+    Cielo Mío
+  </div>
+</header>
+
+<main class="wrap">
+  <div>
+    <div id="intro">
+      <h1>Descubre tu carta astral y lo que depara tu destino</h1>
+      <p class="lead">Déjanos tus datos y recibe gratis tu carta y tu lectura de cada semana.</p>
+    </div>
+
+    <form id="signup" novalidate>
+      <label><span>Tu nombre</span><input type="text" id="fName" autocomplete="given-name"></label>
+      <div class="row">
+        <label><span>Fecha de nacimiento</span><input type="date" id="fDate" min="1920-01-01" max="2026-12-31"></label>
+        <label><span>Hora <small>(si la sabes)</small></span><input type="time" id="fTime"></label>
+      </div>
+      <div class="row">
+        <label><span>País donde naciste</span><select id="fCountry"></select></label>
+        <label><span>Ciudad</span><select id="fCity"></select></label>
+      </div>
+      <label id="otherWrap" hidden><span>Escribe tu ciudad</span><input type="text" id="fOther"></label>
+      <div class="row">
+        <label><span>Correo</span><input type="email" id="fEmail" autocomplete="email"></label>
+        <label><span>Teléfono</span><input type="tel" id="fPhone" autocomplete="tel" placeholder="+51 999 999 999"></label>
+      </div>
+      <label class="check"><input type="checkbox" id="fConsent"> Acepto recibir mi carta y actualizaciones por correo y teléfono. Puedo darme de baja cuando quiera.</label>
+      <p class="err" id="fErr" role="alert"></p>
+      <button class="btn" type="submit">Recibir mi carta gratis</button>
+    </form>
+
+    <div id="result" aria-live="polite">
+      <h1 id="rTitle">Listo</h1>
+      <p class="sign" id="rSign"></p>
+      <p id="rDesc"></p>
+      <p id="rText"></p>
+      <button class="btn ghost" type="button" id="again">Registrar a otra persona</button>
+    </div>
+  </div>
+
+  <div class="wheel-box">
+    <svg id="wheel" viewBox="-200 -210 400 410" role="img" aria-label="Rueda del zodiaco">
+      <path class="pointer" d="M-10 -206 L10 -206 L0 -190 Z"/>
+      <g id="wheelG"></g>
+      <circle class="hub" r="112"/>
+      <text class="hub-name" id="hubName" y="6">Tu signo</text>
+      <text class="hub-sub" id="hubSub" y="34">Elige tu fecha</text>
+    </svg>
+  </div>
+</main>
+
+<footer class="wrap">Contenido para entretenimiento y autoconocimiento. Tus datos se protegen según la Ley N.° 29733.</footer>
+
+<script>
+(function(){
+  const SIGNS=[
+    {n:"Aries",g:"♈",s:[3,21],t:"Valiente y directo. Te gusta empezar cosas y ganar."},
+    {n:"Tauro",g:"♉",s:[4,20],t:"Constante y práctico. Disfrutas lo bueno de la vida."},
+    {n:"Géminis",g:"♊",s:[5,21],t:"Curioso y conversador. Aprendes rápido."},
+    {n:"Cáncer",g:"♋",s:[6,21],t:"Protector y leal. Cuidas a los tuyos como nadie."},
+    {n:"Leo",g:"♌",s:[7,23],t:"Generoso y con brillo propio. Naciste para liderar."},
+    {n:"Virgo",g:"♍",s:[8,23],t:"Ordenado y detallista. Haces las cosas bien."},
+    {n:"Libra",g:"♎",s:[9,23],t:"Amable y justo. Buscas el equilibrio en todo."},
+    {n:"Escorpio",g:"♏",s:[10,23],t:"Intenso y profundo. Cuando quieres algo, lo logras."},
+    {n:"Sagitario",g:"♐",s:[11,22],t:"Optimista y aventurero. Te encanta la libertad."},
+    {n:"Capricornio",g:"♑",s:[12,22],t:"Ambicioso y responsable. Construyes a largo plazo."},
+    {n:"Acuario",g:"♒",s:[1,20],t:"Original e independiente. Piensas distinto."},
+    {n:"Piscis",g:"♓",s:[2,19],t:"Sensible e intuitivo. Tienes mucha imaginación."}
+  ];
+  const $=id=>document.getElementById(id);
+  function signIndex(m,d){
+    const v=m*100+d;
+    for(let i=0;i<12;i++){
+      const a=SIGNS[i].s,b=SIGNS[(i+1)%12].s,va=a[0]*100+a[1],vb=b[0]*100+b[1];
+      if(va<vb?(v>=va&&v<vb):(v>=va||v<vb)) return i;
+    }
+    return 0;
+  }
+  function parseDate(v){const [y,m,d]=(v||"").split("-").map(Number);return y&&m&&d?{y,m,d}:null;}
+
+  // Rueda
+  const g=$("wheelG"),NS="http://www.w3.org/2000/svg",R1=192,R0=118;
+  const pt=(r,deg)=>{const a=deg*Math.PI/180;return [r*Math.sin(a),-r*Math.cos(a)];};
+  SIGNS.forEach((s,i)=>{
+    const c=i*30,[x1,y1]=pt(R1,c-15),[x2,y2]=pt(R1,c+15),[x3,y3]=pt(R0,c+15),[x4,y4]=pt(R0,c-15);
+    const p=document.createElementNS(NS,"path");
+    p.setAttribute("d",`M${x1} ${y1} A${R1} ${R1} 0 0 1 ${x2} ${y2} L${x3} ${y3} A${R0} ${R0} 0 0 0 ${x4} ${y4} Z`);
+    p.setAttribute("class","seg");p.id="seg"+i;g.appendChild(p);
+    const t=document.createElementNS(NS,"text");
+    t.setAttribute("class","glyph");t.id="gl"+i;
+    t.setAttribute("transform",`rotate(${c}) translate(0,-155)`);
+    t.textContent=s.g+"\uFE0E";g.appendChild(t);
+  });
+  let cur=0,sel=-1;
+  function showSign(i){
+    $("hubName").textContent=SIGNS[i].n;$("hubSub").textContent="Tu signo";
+    if(i===sel) return;
+    if(sel>=0){$("seg"+sel).classList.remove("on");$("gl"+sel).classList.remove("on");}
+    sel=i;$("seg"+i).classList.add("on");$("gl"+i).classList.add("on");
+    cur+=((-i*30-cur)%360+540)%360-180;
+    g.style.transform=`rotate(${cur}deg)`;
+  }
+  $("fDate").addEventListener("change",e=>{const p=parseDate(e.target.value);if(p)showSign(signIndex(p.m,p.d));});
+
+  // País y ciudad
+  const PLACES={
+    "Perú":["Lima","Arequipa","Trujillo","Chiclayo","Piura","Cusco","Iquitos","Huancayo","Chimbote","Tacna","Ica","Juliaca","Puno","Cajamarca","Ayacucho","Huánuco","Pucallpa","Tumbes","Moquegua","Huaraz","Chachapoyas","Moyobamba","Tarapoto","Puerto Maldonado","Abancay","Huancavelica","Cerro de Pasco","Callao"],
+    "Argentina":["Buenos Aires","Córdoba","Rosario","Mendoza","La Plata","Tucumán","Mar del Plata","Salta"],
+    "Bolivia":["La Paz","Santa Cruz","Cochabamba","El Alto","Sucre","Oruro","Tarija","Potosí"],
+    "Brasil":["São Paulo","Río de Janeiro","Brasilia","Salvador","Fortaleza","Belo Horizonte","Manaos","Porto Alegre"],
+    "Chile":["Santiago","Valparaíso","Concepción","Antofagasta","Viña del Mar","Temuco","La Serena","Arica"],
+    "Colombia":["Bogotá","Medellín","Cali","Barranquilla","Cartagena","Bucaramanga","Pereira","Santa Marta"],
+    "Costa Rica":["San José","Alajuela","Cartago","Heredia","Liberia","Limón"],
+    "Cuba":["La Habana","Santiago de Cuba","Camagüey","Holguín","Santa Clara"],
+    "Ecuador":["Quito","Guayaquil","Cuenca","Ambato","Manta","Loja","Machala"],
+    "El Salvador":["San Salvador","Santa Ana","San Miguel"],
+    "España":["Madrid","Barcelona","Valencia","Sevilla","Zaragoza","Málaga","Bilbao","Murcia"],
+    "Estados Unidos":["Nueva York","Miami","Los Ángeles","Houston","Chicago","Dallas","San Francisco","Washington D. C."],
+    "Guatemala":["Ciudad de Guatemala","Quetzaltenango","Escuintla","Antigua Guatemala"],
+    "Honduras":["Tegucigalpa","San Pedro Sula","La Ceiba"],
+    "México":["Ciudad de México","Guadalajara","Monterrey","Puebla","Tijuana","Mérida","Cancún","Querétaro"],
+    "Nicaragua":["Managua","León","Granada"],
+    "Panamá":["Ciudad de Panamá","Colón","David"],
+    "Paraguay":["Asunción","Ciudad del Este","Encarnación"],
+    "Puerto Rico":["San Juan","Ponce","Mayagüez"],
+    "República Dominicana":["Santo Domingo","Santiago de los Caballeros","La Romana","Punta Cana","Puerto Plata"],
+    "Uruguay":["Montevideo","Salto","Punta del Este","Paysandú"],
+    "Venezuela":["Caracas","Maracaibo","Valencia","Barquisimeto","Maracay","Mérida"]
+  };
+  const OTHER_COUNTRY="Otro país";
+  const fCountry=$("fCountry"),fCity=$("fCity");
+  const opt=(v,t,dis)=>{const o=document.createElement("option");o.value=v;o.textContent=t;if(dis){o.disabled=true;o.selected=true;}return o;};
+  fCountry.append(opt("","Elige un país",true));
+  Object.keys(PLACES).forEach(c=>fCountry.append(opt(c,c)));
+  fCountry.append(opt(OTHER_COUNTRY,OTHER_COUNTRY));
+  function fillCities(){
+    const c=fCountry.value;fCity.innerHTML="";
+    if(!c){fCity.append(opt("","Primero elige el país",true));fCity.disabled=true;toggleOther();return;}
+    fCity.disabled=false;
+    if(c===OTHER_COUNTRY){fCity.append(opt("__otra","Escribir mi ciudad"));}
+    else{fCity.append(opt("","Elige una ciudad",true));PLACES[c].forEach(x=>fCity.append(opt(x,x)));fCity.append(opt("__otra","Otra ciudad"));}
+    toggleOther();
+  }
+  function toggleOther(){const on=fCity.value==="__otra";$("otherWrap").hidden=!on;if(!on)$("fOther").value="";$("otherWrap").querySelector("span").textContent=fCountry.value===OTHER_COUNTRY?"Escribe tu ciudad y país":"Escribe tu ciudad";}
+  fCountry.addEventListener("change",fillCities);
+  fCity.addEventListener("change",toggleOther);
+  fillCities();
+
+  // Formulario
+  $("signup").addEventListener("submit",e=>{
+    e.preventDefault();
+    const name=$("fName").value.trim(),date=$("fDate").value,time=$("fTime").value,
+          country=$("fCountry").value,city=$("fCity").value==="__otra"?$("fOther").value.trim():$("fCity").value,email=$("fEmail").value.trim(),phone=$("fPhone").value.trim();
+    const fail=(msg,id)=>{$("fErr").textContent=msg;$(id).focus();};
+    if(!name) return fail("Escribe tu nombre.","fName");
+    if(!parseDate(date)) return fail("Elige tu fecha de nacimiento.","fDate");
+    if(!country) return fail("Elige el país donde naciste.","fCountry");
+    if(!city) return fail($("fCity").value==="__otra"?"Escribe la ciudad donde naciste.":"Elige la ciudad donde naciste.",$("fCity").value==="__otra"?"fOther":"fCity");
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("Revisa tu correo.","fEmail");
+    if(phone.replace(/\D/g,"").length<9) return fail("Escribe tu número de teléfono completo.","fPhone");
+    if(!$("fConsent").checked) return fail("Marca la casilla para recibir tu carta.","fConsent");
+    $("fErr").textContent="";
+    enviarRegistro({name,date,time:time||null,country,city,email,phone});
+  });
+
+  // Aquí se conecta el backend (cálculo de la carta y envío por correo y WhatsApp).
+  function enviarRegistro(data){
+    const p=parseDate(data.date),i=signIndex(p.m,p.d),s=SIGNS[i];
+    $("rTitle").textContent="Listo, "+data.name;
+    $("rSign").textContent="Eres "+s.n+" "+s.g+"\uFE0E";
+    $("rDesc").textContent=s.t;
+    $("rText").textContent="Tu carta astral llegará a "+data.email+" en unos minutos. Las actualizaciones te llegarán a tu correo y a tu teléfono.";
+    $("intro").style.display="none";$("signup").style.display="none";
+    $("result").classList.add("show");
+    showSign(i);
+  }
+  $("again").addEventListener("click",()=>{
+    $("signup").reset();fillCities();$("result").classList.remove("show");
+    $("intro").style.display="";$("signup").style.display="";$("fName").focus();
+  });
+})();
+</script>
+</body>
+</html>
